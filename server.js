@@ -1,5 +1,6 @@
 // server.js
 // where your node app starts
+const PORT = process.env.PORT || 4000
 
 // init project
 var express = require('express');
@@ -24,9 +25,15 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
-
+app.get('/api/whoami', async (req, res) => {
+  res.json({
+    "ipaddress": req.headers.host, 
+    "language": req.headers["accept-language"],
+    "software": req.headers["user-agent"]
+   })
+})
 
 // listen for requests :)
-var listener = app.listen(process.env.PORT, function () {
+var listener = app.listen(PORT, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
