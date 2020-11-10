@@ -1,6 +1,13 @@
 // server.js
 // where your node app starts
 const PORT = process.env.PORT || 4000
+const IPData = require('ipdata').default;
+
+const getIpAddress = async () => {
+  const ipdata = new IPData('fbeab82167ad603d2f38833291eb75b9b46957f12b28af684ef82f48');
+  const data = await ipdata.lookup();
+  return data.ip;
+}
 
 // init project
 var express = require('express');
@@ -26,8 +33,9 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.get('/api/whoami', async (req, res) => {
+  const ip = await getIpAddress();
   res.json({
-    "ipaddress": req.headers.host, 
+    "ipaddress": ip, 
     "language": req.headers["accept-language"],
     "software": req.headers["user-agent"]
    })
